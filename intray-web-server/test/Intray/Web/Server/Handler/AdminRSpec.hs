@@ -2,8 +2,6 @@
 
 module Intray.Web.Server.Handler.AdminRSpec where
 
-import qualified Data.Text as T
-import Data.Time
 import Intray.Web.Server.Foundation
 import Intray.Web.Server.TestUtils
 import Test.Syd.Yesod
@@ -54,22 +52,3 @@ spec = intrayWebServerSpec $ do
           -- No more account afterwards
           get $ AdminR $ AdminAccountR username
           statusIs 404
-
-  describe "AdminAccountSetSubscriptionR" $ do
-    it "POSTs a 200 when logged in as admin" $ \yc ->
-      forAllValid $ \day -> runYesodClientM yc $ do
-        withExampleAccount $ \username _ -> do
-          withAdminAccountAndLogin_ $ do
-            -- An account beforehand
-            get $ AdminR $ AdminAccountSetSubscriptionR username
-            statusIs 200
-            -- Can delete it
-            request $ do
-              setMethod methodPost
-              setUrl $ AdminR $ AdminAccountSetSubscriptionR username
-              addToken
-              addPostParam "end-date" $ T.pack $ formatTime defaultTimeLocale "%F" (day :: Day)
-            statusIs 303
-            locationShouldBe $ AdminR $ AdminAccountSetSubscriptionR username
-            _ <- followRedirect
-            statusIs 200

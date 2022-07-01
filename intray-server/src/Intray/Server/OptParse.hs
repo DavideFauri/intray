@@ -47,40 +47,6 @@ combineToSettings flags@Flags {..} env@Environment {..} mConf = do
       case parseUsername $ T.pack s of
         Nothing -> die $ unwords ["Invalid admin username:", s]
         Just u -> pure u
-  setFreeloaders <-
-    forM (flagFreeloaders ++ fromMaybe [] (mc confFreeloaders)) $ \s ->
-      case parseUsername $ T.pack s of
-        Nothing -> die $ unwords ["Invalid freeloader username:", s]
-        Just u -> pure u
-  setMonetisationSettings <-
-    do
-      let mmc :: (MonetisationConfiguration -> Maybe a) -> Maybe a
-          mmc func = mc confMonetisationConfig >>= func
-      let plan =
-            T.pack
-              <$> (flagStripePlan <|> envStripePlan <|> mmc monetisationConfStripePlan)
-      let secretKey =
-            T.pack
-              <$> ( flagStripeSecretKey <|> envStripeSecretKey
-                      <|> mmc monetisationConfStripeSecretKey
-                  )
-      let publicKey =
-            T.pack
-              <$> ( flagStripePublishableKey <|> envStripePublishableKey
-                      <|> mmc monetisationConfStripePublishableKey
-                  )
-      let maxItemsFree =
-            fromMaybe 5 $
-              flagMaxItemsFree <|> envMaxItemsFree <|> mmc monetisationConfMaxItemsFree
-      pure $ do
-        ss <- StripeSettings <$> plan <*> secretKey <*> publicKey
-        price <- flagPrice <|> envPrice <|> mmc monetisationConfPrice
-        pure $
-          MonetisationSettings
-            { monetisationSetStripeSettings = ss,
-              monetisationSetMaxItemsFree = maxItemsFree,
-              monetisationSetPrice = price
-            }
   pure Settings {..}
 
 getConfiguration :: Flags -> Environment -> IO (Maybe Configuration)
@@ -106,11 +72,6 @@ environmentParser =
       <*> Env.var (fmap Just . Env.str) "DATABASE" (mE "database file")
       <*> Env.var (fmap Just . Env.auto) "LOG_LEVEL" (mE "minimal severity of log messages")
       <*> Env.var (fmap Just . Env.str) "SIGNING_KEY_FILE" (mE "the file to store the signing key in")
-      <*> Env.var (fmap Just . Env.str) "STRIPE_PLAN" (mE "stripe plan id for subscriptions")
-      <*> Env.var (fmap Just . Env.str) "STRIPE_SECRET_KEY" (mE "stripe secret key")
-      <*> Env.var (fmap Just . Env.str) "STRIPE_PUBLISHABLE_KEY" (mE "stripe publishable key")
-      <*> Env.var (fmap Just . Env.auto) "MAX_ITEMS_FREE" (mE "maximum items that a free user can have")
-      <*> Env.var (fmap Just . Env.str) "PRICE" (mE "A text description of the plan price")
   where
     mE h = Env.def Nothing <> Env.keep <> Env.help h
 
@@ -162,7 +123,6 @@ parseFlags =
           ]
       )
     <*> many (strOption (mconcat [long "admin", metavar "USERNAME", help "An admin"]))
-    <*> many (strOption (mconcat [long "freeloader", metavar "USERNAME", help "A freeloader"]))
     <*> option
       (Just <$> auto)
       ( mconcat
@@ -180,50 +140,5 @@ parseFlags =
             value Nothing,
             metavar "FILEPATH",
             help "the file to store the signing key in"
-          ]
-      )
-    <*> option
-      (Just <$> str)
-      ( mconcat
-          [ long "stripe-plan",
-            value Nothing,
-            metavar "PLAN_ID",
-            help "The product pricing plan for stripe"
-          ]
-      )
-    <*> option
-      (Just <$> str)
-      ( mconcat
-          [ long "stripe-secret-key",
-            value Nothing,
-            metavar "SECRET_KEY",
-            help "The secret key for stripe"
-          ]
-      )
-    <*> option
-      (Just <$> str)
-      ( mconcat
-          [ long "stripe-publishable-key",
-            value Nothing,
-            metavar "PUBLISHABLE_KEY",
-            help "The publishable key for stripe"
-          ]
-      )
-    <*> option
-      (Just <$> auto)
-      ( mconcat
-          [ long "max-items-free",
-            value Nothing,
-            metavar "INT",
-            help "How many items a user can sync in the free plan"
-          ]
-      )
-    <*> option
-      (Just <$> str)
-      ( mconcat
-          [ long "price",
-            value Nothing,
-            metavar "PRICE",
-            help "A text description of the price"
           ]
       )

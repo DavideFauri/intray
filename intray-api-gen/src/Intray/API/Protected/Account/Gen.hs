@@ -16,7 +16,3 @@ instance GenValid AccountInfo where
 instance GenValid ChangePassphrase where
   genValid = genValidStructurally
   shrinkValid = shrinkValidStructurally
-
-instance GenValid PaidStatus where
-  genValid = genValidStructurally
-  shrinkValid = shrinkValidStructurally

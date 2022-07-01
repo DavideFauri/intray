@@ -54,8 +54,7 @@ intrayProtectedAccountServer =
     { getAccountInfo = withAuthResultAndPermission PermitGetAccountInfo serveGetAccountInfo,
       postChangePassphrase =
         withAuthResultAndPermission PermitPostChangePassphrase servePostChangePassphrase,
-      deleteAccount = withAuthResultAndPermission PermitDeleteAccount serveDeleteAccount,
-      postInitiateStripeCheckoutSession = withAuthResultAndPermission PermitInitiateCheckout servePostInitiateStripeCheckoutSession
+      deleteAccount = withAuthResultAndPermission PermitDeleteAccount serveDeleteAccount
     }
 
 intrayProtectedAccessKeyServer :: IntrayProtectedAccessKeySite (AsServerT IntrayHandler)
@@ -73,17 +72,14 @@ intrayAdminServer =
     { adminGetStats = withAuthResultAndPermission PermitAdminGetStats serveAdminGetStats,
       adminDeleteAccount = withAuthResultAndPermission PermitAdminDeleteAccount serveAdminDeleteAccount,
       adminGetAccounts = withAuthResultAndPermission PermitAdminGetAccounts serveAdminGetAccounts,
-      adminGetAccount = withAuthResultAndPermission PermitAdminGetAccounts serveAdminGetAccount,
-      adminPutUserSubscription = withAuthResultAndPermission PermitAdminPutAccountSubscription serveAdminPutUserSubscription
+      adminGetAccount = withAuthResultAndPermission PermitAdminGetAccounts serveAdminGetAccount
     }
 
 intrayPublicServer :: IntrayPublicSite (AsServerT IntrayHandler)
 intrayPublicServer =
   IntrayPublicSite
     { postRegister = servePostRegister,
-      postLogin = servePostLogin,
-      getPricing = serveGetPricing,
-      postStripeHook = servePostStripeHook
+      postLogin = servePostLogin
     }
 
 withAuthResult :: ThrowAll a => (AuthCookie -> a) -> (AuthResult AuthCookie -> a)

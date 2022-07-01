@@ -20,26 +20,20 @@ getAccountR :: Handler Html
 getAccountR =
   withLogin $ \t -> do
     mai <- runClientOrDisallow $ clientGetAccountInfo t
-    mPricing <- runClientOrErr clientGetPricing
-    accountInfoWidget <- accountInfoSegment mai mPricing
+    accountInfoWidget <- accountInfoSegment mai
     token <- genToken
     withNavBar $(widgetFile "account")
 
-accountInfoSegment :: Maybe AccountInfo -> Maybe Pricing -> Handler Widget
-accountInfoSegment Nothing _ =
+accountInfoSegment :: Maybe AccountInfo -> Handler Widget
+accountInfoSegment Nothing =
   pure
     [whamlet|
         <div .is-negative .message>
             You are not authorised to view account info.
             |]
-accountInfoSegment (Just AccountInfo {..}) mp = do
+accountInfoSegment (Just AccountInfo {..}) = do
   now <- liftIO getCurrentTime
-  let subbedWidget =
-        case accountInfoStatus of
-          HasNotPaid _ -> [whamlet|Not subscribed|]
-          HasPaid subbed -> [whamlet|Subscribed until ^{makeTimestampWidget now subbed}|]
-          NoPaymentNecessary -> [whamlet|No payment necessary|]
-      createdWidget = makeTimestampWidget now accountInfoCreatedTimestamp
+  let createdWidget = makeTimestampWidget now accountInfoCreatedTimestamp
   pure $
     mconcat
       [ [whamlet|
@@ -47,32 +41,10 @@ accountInfoSegment (Just AccountInfo {..}) mp = do
             Info
           <p> Username: #{usernameText accountInfoUsername}
           <p> Created: ^{createdWidget}
-          $maybe _ <- mp
-            <p>
-              Status: ^{subbedWidget}
         |],
-        case accountInfoStatus of
-          HasNotPaid _ -> maybe mempty pricingStripeForm mp
-          _ -> mempty -- Already subscribed or no payment necessary
+        mempty -- Already subscribed or no payment necessary
       ]
 
-pricingStripeForm :: Pricing -> Widget
-pricingStripeForm p =
-  [whamlet|
-          <h2 .title .is-4> Subscribe
-
-          <p>
-            <ul>
-              <li>
-                #{pricingPrice p} per year
-              <li>
-                Unlimited items
-              <li>
-                Full API access
-          <p>
-            <a .button .is-primary href=@{CheckoutR}>
-              Checkout
-    |]
 
 adminSegment :: Maybe AccountInfo -> Widget
 adminSegment Nothing = mempty

@@ -45,9 +45,7 @@ runIntrayServer Settings {..} =
                     envConnectionPool = pool,
                     envCookieSettings = cookieCfg,
                     envJWTSettings = jwtCfg,
-                    envAdmins = setAdmins,
-                    envFreeloaders = setFreeloaders,
-                    envMonetisation = setMonetisationSettings
+                    envAdmins = setAdmins
                   }
           let runServer = Warp.run setPort $ intrayApp intrayEnv
           liftIO runServer

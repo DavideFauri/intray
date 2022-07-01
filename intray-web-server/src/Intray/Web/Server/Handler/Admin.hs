@@ -6,8 +6,6 @@ module Intray.Web.Server.Handler.Admin
   ( getAdminPanelR,
     getAdminAccountR,
     postAdminAccountDeleteR,
-    getAdminAccountSetSubscriptionR,
-    postAdminAccountSetSubscriptionR,
   )
 where
 
@@ -25,7 +23,6 @@ getAdminPanelR :: Handler Html
 getAdminPanelR =
   withAdminCreds $ \t -> do
     AdminStats {..} <- runClientOrErr $ clientAdminGetStats t
-    mPricing <- runClientOrErr clientGetPricing
     let ActiveUsers {..} = adminStatsActiveUsers
     users <- runClientOrErr $ clientAdminGetAccounts t
     now <- liftIO getCurrentTime
@@ -44,19 +41,6 @@ postAdminAccountDeleteR username =
   withAdminCreds $ \t -> do
     NoContent <- runClientOrErr $ clientAdminDeleteAccount t username
     redirect $ AdminR AdminPanelR
-
-getAdminAccountSetSubscriptionR :: Username -> Handler Html
-getAdminAccountSetSubscriptionR username = withAdminCreds $ \t -> withUserViaAdmin t username $ \AccountInfo {..} -> do
-  now <- liftIO getCurrentTime
-  withNavBar $ do
-    token <- genToken
-    $(widgetFile "admin/account/set-subscription")
-
-postAdminAccountSetSubscriptionR :: Username -> Handler Html
-postAdminAccountSetSubscriptionR username = withAdminCreds $ \t -> do
-  endDate <- runInputPost $ ireq dayField "end-date"
-  NoContent <- runClientOrErr $ clientAdminPutAccountSubscription t username $ UTCTime endDate 0
-  redirect $ AdminR $ AdminAccountSetSubscriptionR username
 
 withAdminCreds :: (Token -> Handler a) -> Handler a
 withAdminCreds func =

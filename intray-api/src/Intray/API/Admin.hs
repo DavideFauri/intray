@@ -25,8 +25,7 @@ data IntrayAdminSite route = IntrayAdminSite
   { adminGetStats :: !(route :- AdminGetStats),
     adminDeleteAccount :: !(route :- AdminDeleteAccount),
     adminGetAccount :: !(route :- AdminGetAccount),
-    adminGetAccounts :: !(route :- AdminGetAccounts),
-    adminPutUserSubscription :: !(route :- PutUserSubscription)
+    adminGetAccounts :: !(route :- AdminGetAccounts)
   }
   deriving (Generic)
 
@@ -52,9 +51,3 @@ type AdminGetAccounts =
     :> "accounts"
     :> Get '[JSON] [AccountInfo]
 
-type PutUserSubscription =
-  ProtectAPI
-    :> "accounts"
-    :> Capture "username" Username
-    :> ReqBody '[JSON] UTCTime
-    :> Verb 'PUT 204 '[JSON] NoContent

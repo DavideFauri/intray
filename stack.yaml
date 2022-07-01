@@ -10,12 +10,9 @@ packages:
 - intray-server-gen
 - intray-web-server
 
-- intray-stripe-client
-
 # These are duplicated in nix/overlay.
 ghc-options:
   "$locals": -Wall -Wincomplete-uni-patterns -Wincomplete-record-updates -Wpartial-fields -Widentities -Wredundant-constraints -Wcpp-undef
-  intray-stripe-client: -w # Turn off warnings for the generated code.
 
 
 

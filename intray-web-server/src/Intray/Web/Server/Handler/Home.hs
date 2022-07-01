@@ -13,7 +13,6 @@ import Yesod
 
 getHomeR :: Handler Html
 getHomeR = do
-  mPricing <- runClientOrErr clientGetPricing
   withNavBar $ do
     setTitle "Intray"
     setDescriptionIdemp "A GTD In-box system"

@@ -14,7 +14,6 @@ import Intray.API.Types ()
 
 data AdminStats = AdminStats
   { adminStatsNbAccounts :: !Word,
-    adminStatsSubscribedUsers :: !Word,
     adminStatsNbItems :: !Word,
     adminStatsActiveUsers :: !ActiveUsers
   }
@@ -28,7 +27,6 @@ instance HasCodec AdminStats where
     object "AdminStats" $
       AdminStats
         <$> requiredField "accounts" "how many accounts there are" .= adminStatsNbAccounts
-        <*> requiredField "subscribed-user" "how many of those are subscribed" .= adminStatsSubscribedUsers
         <*> requiredField "items" "total number of items that users have in their intrays" .= adminStatsNbItems
         <*> requiredField "active-users" "X-active users stats" .= adminStatsActiveUsers
 

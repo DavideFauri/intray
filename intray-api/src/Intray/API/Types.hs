@@ -28,7 +28,6 @@ module Intray.API.Types
     parseUsername,
     parseUsernameWithError,
     usernameText,
-    Pricing (..),
     module Data.UUID.Typed,
   )
 where
@@ -121,26 +120,6 @@ instance HasCodec LoginForm where
       LoginForm
         <$> requiredField "username" "Username" .= loginFormUsername
         <*> requiredField "password" "Password" .= loginFormPassword
-
-data Pricing = Pricing
-  { pricingPlan :: !Text,
-    pricingPrice :: !Text,
-    pricingStripePublishableKey :: !Text,
-    pricingMaxItemsFree :: !Int
-  }
-  deriving stock (Show, Eq, Generic)
-  deriving (FromJSON, ToJSON) via (Autodocodec Pricing)
-
-instance Validity Pricing
-
-instance HasCodec Pricing where
-  codec =
-    object "Pricing" $
-      Pricing
-        <$> requiredField "plan" "stripe plan" .= pricingPlan
-        <*> requiredField "price" "price" .= pricingPrice
-        <*> requiredField "publishable-key" "publishable key" .= pricingStripePublishableKey
-        <*> requiredField "max-items-free" "how many items a free account can have" .= pricingMaxItemsFree
 
 instance HasCodec LogLevel where
   codec =

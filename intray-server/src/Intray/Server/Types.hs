@@ -1,14 +1,9 @@
-module Intray.Server.Types
-  ( module Intray.Server.Types,
-    MonetisationSettings (..),
-  )
-where
+module Intray.Server.Types where
 
 import Control.Monad.Logger
 import Database.Persist.Sqlite
 import Import
 import Intray.API
-import Intray.Server.OptParse.Types
 import Servant
 import Servant.Auth.Server
 
@@ -20,9 +15,7 @@ data IntrayServerEnv = IntrayServerEnv
     envConnectionPool :: !ConnectionPool,
     envCookieSettings :: !CookieSettings,
     envJWTSettings :: !JWTSettings,
-    envAdmins :: ![Username],
-    envFreeloaders :: ![Username],
-    envMonetisation :: !(Maybe MonetisationSettings)
+    envAdmins :: ![Username]
   }
 
 type IntrayHandler = ReaderT IntrayServerEnv (LoggingT Handler)

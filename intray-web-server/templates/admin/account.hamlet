@@ -28,19 +28,6 @@
         #{accountInfoCount}
 
       <p>
-        $case accountInfoStatus
-          $of HasPaid end
-            Subscribed until #{formatTime defaultTimeLocale "%F" end} (#{prettyTimeAuto now end})
-          $of NoPaymentNecessary
-            No subscription necessary
-          $of HasNotPaid left
-            Not subscribed, #{left} items left.
-
-
-      <a .button href=@{AdminR $ AdminAccountSetSubscriptionR username}>
-        Override Subscription
-
-      <p>
 
       <h4 .title .is-4>
         Delete Account

@@ -14,10 +14,6 @@
 /access-keys                       AccessKeysR          GET POST
 /access-keys/revoke/#AccessKeyUUID AccessKeyRevokeR     POST
 
-/checkout/stripe                   CheckoutR GET
-/checkout/stripe/success           CheckoutSuccessR     GET
-/checkout/stripe/canceled          CheckoutCanceledR    GET
-
 -- Subsites
 /auth                              AuthR   Auth            getAuth
 /static                            StaticR EmbeddedStatic  appStatic
@@ -27,6 +23,5 @@
   / AdminPanelR GET
   /account/#{Username} AdminAccountR GET
   /account/#{Username}/delete AdminAccountDeleteR POST
-  /account/#{Username}/set-subscription AdminAccountSetSubscriptionR GET POST
 
 /reload ReloadR GET

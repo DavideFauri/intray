@@ -7,7 +7,6 @@
 module Intray.Server.TestUtils
   ( withIntrayServer,
     withFreeIntrayServer,
-    withPaidIntrayServer,
     intrayTestConnectionSetupFunc,
     intrayTestClientEnvSetupFunc,
     intrayTestClientEnvSetupFunc',
@@ -37,7 +36,6 @@ import Intray.API
 import Intray.Client
 import Intray.Data.Gen ()
 import Intray.Server
-import Intray.Server.OptParse.Types
 import Intray.Server.Types
 import qualified Network.HTTP.Client as HTTP
 import qualified Network.HTTP.Types as HTTP
@@ -52,41 +50,22 @@ import Web.Cookie
 
 withIntrayServer :: TestDef '[HTTP.Manager] ClientEnv -> Spec
 withIntrayServer specFunc = do
-  describe "Paying" $ withPaidIntrayServer 5 specFunc
   describe "Free" $ withFreeIntrayServer specFunc
-
-withPaidIntrayServer :: Int -> TestDef '[HTTP.Manager] ClientEnv -> Spec
-withPaidIntrayServer maxFree specFunc =
-  managerSpec $
-    setupAroundWith' (\man () -> paidIntrayTestClientEnvSetupFunc maxFree man) $
-      modifyMaxSuccess (`div` 20) specFunc
 
 withFreeIntrayServer :: TestDef '[HTTP.Manager] ClientEnv -> Spec
 withFreeIntrayServer specFunc =
   managerSpec $
-    setupAroundWith' (\man () -> intrayTestClientEnvSetupFunc Nothing man) $
+    setupAroundWith' (\man () -> intrayTestClientEnvSetupFunc man) $
       modifyMaxSuccess (`div` 20) specFunc
 
 intrayTestConnectionSetupFunc :: SetupFunc ConnectionPool
 intrayTestConnectionSetupFunc = connectionPoolSetupFunc serverAutoMigration
 
-paidIntrayTestClientEnvSetupFunc :: Int -> HTTP.Manager -> SetupFunc ClientEnv
-paidIntrayTestClientEnvSetupFunc maxFree man = do
-  let monetisationSetStripeSettings =
-        StripeSettings
-          { stripeSetPlan = "dummy-plan",
-            stripeSetSecretKey = error "should not try to access stripe during testing",
-            stripeSetPublishableKey = "Example, should not be used."
-          }
-  let monetisationSetPrice = "dummy price"
-  let monetisationSetMaxItemsFree = maxFree
-  intrayTestClientEnvSetupFunc (Just MonetisationSettings {..}) man
+intrayTestClientEnvSetupFunc :: HTTP.Manager -> SetupFunc ClientEnv
+intrayTestClientEnvSetupFunc man = intrayTestConnectionSetupFunc >>= intrayTestClientEnvSetupFunc' man
 
-intrayTestClientEnvSetupFunc :: Maybe MonetisationSettings -> HTTP.Manager -> SetupFunc ClientEnv
-intrayTestClientEnvSetupFunc menv man = intrayTestConnectionSetupFunc >>= intrayTestClientEnvSetupFunc' menv man
-
-intrayTestClientEnvSetupFunc' :: Maybe MonetisationSettings -> HTTP.Manager -> ConnectionPool -> SetupFunc ClientEnv
-intrayTestClientEnvSetupFunc' menv man pool = do
+intrayTestClientEnvSetupFunc' :: HTTP.Manager -> ConnectionPool -> SetupFunc ClientEnv
+intrayTestClientEnvSetupFunc' man pool = do
   signingKey <- liftIO Auth.generateKey
   let jwtCfg = defaultJWTSettings signingKey
   let cookieCfg = defaultCookieSettings
@@ -98,9 +77,7 @@ intrayTestClientEnvSetupFunc' menv man pool = do
             envConnectionPool = pool,
             envCookieSettings = cookieCfg,
             envJWTSettings = jwtCfg,
-            envAdmins = [fromJust $ parseUsername "admin"],
-            envFreeloaders = [],
-            envMonetisation = menv
+            envAdmins = [fromJust $ parseUsername "admin"]
           }
   let application = serveWithContext intrayAPI (intrayAppContext intrayEnv) (makeIntrayServer intrayEnv)
   p <- applicationSetupFunc application

@@ -11,7 +11,6 @@ module Intray.Client
   )
 where
 
-import Data.Aeson as JSON
 import Data.Mergeless
 import qualified Data.UUID.Typed
 import Import
@@ -35,7 +34,6 @@ clientPostSync ::
 clientGetAccountInfo :: Token -> ClientM AccountInfo
 clientPostChangePassphrase :: Token -> ChangePassphrase -> ClientM NoContent
 clientDeleteAccount :: Token -> ClientM NoContent
-clientPostInitiateStripeCheckoutSession :: Token -> InitiateStripeCheckoutSession -> ClientM InitiatedCheckoutSession
 clientPostAddAccessKey :: Token -> AddAccessKey -> ClientM AccessKeyCreated
 clientGetAccessKey :: Token -> AccessKeyUUID -> ClientM AccessKeyInfo
 clientGetAccessKeys :: Token -> ClientM [AccessKeyInfo]
@@ -43,13 +41,10 @@ clientDeleteAccessKey :: Token -> AccessKeyUUID -> ClientM NoContent
 clientGetPermissions :: Token -> ClientM (Set Permission)
 clientPostRegister :: Registration -> ClientM NoContent
 clientPostLogin :: LoginForm -> ClientM (Headers '[Header "Set-Cookie" Text] NoContent)
-clientGetPricing :: ClientM (Maybe Pricing)
-clientPostStripeHook :: JSON.Value -> ClientM NoContent
 clientAdminGetStats :: Token -> ClientM AdminStats
 clientAdminDeleteAccount :: Token -> Username -> ClientM NoContent
 clientAdminGetAccount :: Token -> Username -> ClientM AccountInfo
 clientAdminGetAccounts :: Token -> ClientM [AccountInfo]
-clientAdminPutAccountSubscription :: Token -> Username -> UTCTime -> ClientM NoContent
 clientGetShowItem
   :<|> clientGetSize
   :<|> clientGetItemUUIDs
@@ -61,7 +56,6 @@ clientGetShowItem
   :<|> clientGetAccountInfo
   :<|> clientPostChangePassphrase
   :<|> clientDeleteAccount
-  :<|> clientPostInitiateStripeCheckoutSession
   :<|> clientPostAddAccessKey
   :<|> clientGetAccessKey
   :<|> clientGetAccessKeys
@@ -69,11 +63,8 @@ clientGetShowItem
   :<|> clientGetPermissions
   :<|> clientPostRegister
   :<|> clientPostLogin
-  :<|> clientGetPricing
-  :<|> clientPostStripeHook
   :<|> clientAdminGetStats
   :<|> clientAdminDeleteAccount
   :<|> clientAdminGetAccount
-  :<|> clientAdminGetAccounts
-  :<|> clientAdminPutAccountSubscription =
+  :<|> clientAdminGetAccounts =
     client (flatten intrayAPI)

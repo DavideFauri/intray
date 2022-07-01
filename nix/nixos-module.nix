@@ -47,47 +47,6 @@ in
               example = [ "syd" ];
               description = "A list of the usernames that will have admin privileges";
             };
-            freeloaders = mkOption {
-              type = types.nullOr (types.listOf types.str);
-              default = null;
-              example = [ "syd" ];
-              description = "A list of the usernames that will will be able to use the service for free";
-            };
-            monetisation = mkOption {
-              default = null;
-              type =
-                types.nullOr (
-                  types.submodule {
-                    options = {
-                      stripe-plan = mkOption {
-                        type = types.str;
-                        example = "plan_XXXXXXXXXXXXXX";
-                        description = "Stripe plan for subscriptions.";
-                      };
-                      stripe-secret-key = mkOption {
-                        type = types.str;
-                        example = "sk_test_XXXXXXXXXXXXXXXXXXXXXXXX";
-                        description = "Stripe secret key.";
-                      };
-                      stripe-publishable-key = mkOption {
-                        type = types.str;
-                        example = "pk_test_XXXXXXXXXXXXXXXXXXXXXXXX";
-                        description = "Stripe publishable key.";
-                      };
-                      max-items-free = mkOption {
-                        type = types.int;
-                        example = 5;
-                        description = "Maximum number of items a user can use without a subscription";
-                      };
-                      price = mkOption {
-                        type = types.str;
-                        example = "12 CHF";
-                        description = "Display price";
-                      };
-                    };
-                  }
-                );
-            };
           };
         });
       };
@@ -148,9 +107,7 @@ in
         (attrOrNullHead "host" hosts)
         (attrOrNull "port" port)
         (attrOrNull "admins" admins)
-        (attrOrNull "freeloaders" freeloaders)
         (attrOrNull "log-level" log-level)
-        (attrOrNull "monetisation" monetisation)
         cfg.api-server.config
       ];
       api-server-config-file = (pkgs.formats.yaml { }).generate "intray-api-server-config.yaml" api-server-config;

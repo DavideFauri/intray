@@ -25,7 +25,6 @@ library
       Intray.Server.Handler.Admin.GetAccount
       Intray.Server.Handler.Admin.GetAccounts
       Intray.Server.Handler.Admin.GetStats
-      Intray.Server.Handler.Admin.PutUserSubscription
       Intray.Server.Handler.DeleteAccount
       Intray.Server.Handler.DeleteItem
       Intray.Server.Handler.GetAccountInfo
@@ -37,14 +36,10 @@ library
       Intray.Server.Handler.GetShowItem
       Intray.Server.Handler.PostAddItem
       Intray.Server.Handler.PostChangePassphrase
-      Intray.Server.Handler.PostInitiateStripeCheckoutSession
-      Intray.Server.Handler.PostStripeHook
       Intray.Server.Handler.PostSync
       Intray.Server.Handler.Public
-      Intray.Server.Handler.Public.GetPricing
       Intray.Server.Handler.Public.PostLogin
       Intray.Server.Handler.Public.PostRegister
-      Intray.Server.Handler.Stripe
       Intray.Server.Handler.Utils
       Intray.Server.Item
       Intray.Server.OptParse
@@ -74,7 +69,6 @@ library
     , http-client
     , intray-api
     , intray-data
-    , intray-stripe-client
     , jose
     , markdown
     , mergeless

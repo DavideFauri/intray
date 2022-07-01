@@ -143,18 +143,6 @@
         "url": "https://github.com/NorfairKing/seocheck/archive/9784aaab22aca7979800b9daf7a2293df7533858.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
-    "stripe-spec": {
-        "branch": "master",
-        "description": "An OpenAPI specification for the Stripe API.        ",
-        "homepage": null,
-        "owner": "stripe",
-        "repo": "openapi",
-        "rev": "3f46b1afe352a51b3687e34d07c72b58c99bef8a",
-        "sha256": "0pzqch2qxfza6344kzknk455fsgc0bqvl28h0md5jw0zh4d0xm55",
-        "type": "tarball",
-        "url": "https://github.com/stripe/openapi/archive/3f46b1afe352a51b3687e34d07c72b58c99bef8a.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
     "sydtest": {
         "branch": "development",
         "description": "A modern testing framework for Haskell with good defaults and advanced testing features.",

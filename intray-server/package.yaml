@@ -41,7 +41,6 @@ library:
   - servant-auth-server
   - servant-docs
   - servant-server
-  - intray-stripe-client
   - text
   - time
   - typed-uuid

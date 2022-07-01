@@ -46,26 +46,6 @@ User
     deriving Generic
 
 
-StripeCustomer sql=customer
-    user AccountUUID
-    customer Text sql=stripe_customer
-    UniqueStripeCustomer user customer
-
-    deriving Show
-    deriving Eq
-    deriving Generic
-
-Subscription
-    user AccountUUID
-    end UTCTime
-
-    UniqueSubscriptionUser user
-
-    deriving Show
-    deriving Eq
-    deriving Generic
-
-
 IntrayItem
     identifier ItemUUID
     userId AccountUUID

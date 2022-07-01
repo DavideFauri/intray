@@ -16,5 +16,3 @@ spec = do
   jsonSpec @Registration
   genValidSpec @LoginForm
   jsonSpec @LoginForm
-  genValidSpec @Pricing
-  jsonSpec @Pricing

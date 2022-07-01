@@ -23,6 +23,3 @@ instance GenValid LoginForm where
   genValid = genValidStructurally
   shrinkValid = shrinkValidStructurally
 
-instance GenValid Pricing where
-  genValid = genValidStructurally
-  shrinkValid = shrinkValidStructurally
