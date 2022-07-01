@@ -16,17 +16,8 @@ import Yesod.EmbeddedStatic.Remote
 mkEmbeddedStatic
   development
   "myStatic"
-  [ embedFile "static/gtd_flowchart.jpg",
-    embedFile "static/tom-sydney-kerckhove_ideas.svg",
-    embedFile "static/tom-sydney-kerckhove_thinking.svg",
-    embedFile "static/tom-sydney-kerckhove_flowchart-gtd.svg",
-    embedFile "static/tom-sydney-kerckhove_faq.svg",
+  [ embedFile "static/tom-sydney-kerckhove_flowchart-gtd.svg",
     embedFile "static/favicon.ico",
-    embedFile "static/tom-sydney-kerckhove_github-icon.svg",
-    embedFile "static/tom-sydney-kerckhove_linkedin-icon.svg",
-    embedFile "static/tom-sydney-kerckhove_tiktok-icon.svg",
-    embedFile "static/tom-sydney-kerckhove_twitter-icon.svg",
-    embedFile "static/tom-sydney-kerckhove_youtube-icon.svg",
     embedFile "static/tom-sydney-kerckhove_logo-intray.svg",
     embedRemoteFile
       "static/semantic/themes/default/assets/fonts/icons.ttf"

@@ -11,3 +11,5 @@ dist/
 .pre-commit-config.yaml
 .direnv/
 static/
+client_session_key.aes
+signing-key.json

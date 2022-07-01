@@ -7,18 +7,6 @@
         ^{accountInfoWidget}
 
 
-
-  <div .columns .is-centered>
-    <div .column .is-half .content>
-      <h2 .title .is-4>
-        Roadmap
-      <p>
-        You can vote on the feature roadmap:
-      <a .button .is-primary href="https://forms.gle/yWyDjRsiup6ETCn18">
-        Vote on the roadmap
-
-
-
   <div .columns .is-centered>
     <div .column .is-half .content>
       <h2 .title .is-4>
@@ -35,7 +23,7 @@
           method=post
           action=@{AccountDeleteR}>
           ^{token}
-          <button 
+          <button
             .is-danger .button .my-1
             type=submit
             onclick="return confirm('Are you sure you want to delete your account? This cannot be undone.');">

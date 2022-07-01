@@ -17,56 +17,7 @@
 
       <div .columns .is-centered .is-mobile>
         <a .button .is-size-4 .is-primary href=@{AccountR}>
-          Get Intray
+          Register
 
 
-
-    <section .section>    
-      <div .columns .is-variable .is-half .is-vcentered>
-
-        <div .column>
-          <p .title .is-size-4 .has-text-centered>
-            Does your brain work too fast?
-
-          <p .content .is-normal .has-text-justified>
-            Jot down what's on your mind. A film suggestion, a new business idea, or buying peanut butter...
-            Intray guarantees you will never forget a commitment.
-            Because you will process every thought and idea accordingly.
-            Ready to become even more productive?
-
-
-
-        <div .column>
-          <p .has-text-centered>
-            <img src=@{StaticR static_tom_sydney_kerckhove_ideas_svg} alt="privacy protection" width="450px">
-
-
-
-    <section .section>
-      <div .columns .is-centered>
-        <div .column>
-          <div .content>
-            <ul>
-              <li> Faster, cleaner and leaner than its alternatives
-              <li> No-nonsense web interface
-              <li> Minimal design, maximum efficient
-              <li> In browser or terminal
-
-        <div .column>
-          <div .content>
-            <ul>
-              <li> Application programming interface
-              <li> Command line interface options included
-              <li> Open source
-              <li> Auto syncing
-
-
-        <div .column>
-          <div .content>
-            <ul>
-              <li> Ad-free forever
-              <li> Anywhere, anytime
-              <li> Constantly improved
-              <li> Reliable
-              <li> Optimized for power users
 

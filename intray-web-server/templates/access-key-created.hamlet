@@ -17,5 +17,5 @@
             #{accessKeySecretText accessKeyCreatedKey}
 
         <p>
-          This message will dissappear.
+          This message will disappear.
           Please make sure that you have saved the access key secret.
