@@ -1,16 +1,12 @@
 loops:
-  ci:
-    description: Get CI Passing locally
-    command: nix-build ci.nix --no-out-link
 
   test-all:
     description: Run all tests
     command: |
       stack test \
         --fast \
-        --no-nix --system-ghc --ghc-options='-freverse-errors' \
+        --system-ghc --ghc-options='-freverse-errors' \
         --with-hpack hpack \
-        --no-nix-pure \
         --no-rerun-tests \
         --pedantic
 
@@ -19,9 +15,8 @@ loops:
     command: |
       stack test intray-cli \
         --fast \
-        --no-nix --system-ghc --ghc-options='-freverse-errors' \
+        --system-ghc --ghc-options='-freverse-errors' \
         --with-hpack hpack \
-        --no-nix-pure \
         --test-arguments=''
 
   server:
@@ -29,9 +24,8 @@ loops:
     script: |
       stack install :intray-server \
         --fast \
-        --no-nix --system-ghc --ghc-options='-freverse-errors' \
+        --system-ghc --ghc-options='-freverse-errors' \
         --with-hpack hpack \
-        --no-nix-pure
       if [[ "$?" != "0" ]]; then exit 1; fi
       killall intray-server >/dev/null 2>&1 || true
       ~/.local/bin/intray-server --admin admin & disown
@@ -45,9 +39,8 @@ loops:
     script: |
       stack install :intray-server :intray-web-server \
         --fast \
-        --no-nix --system-ghc --ghc-options='-freverse-errors' \
+        --system-ghc --ghc-options='-freverse-errors' \
         --with-hpack hpack \
-        --no-nix-pure
       if [[ "$?" != "0" ]]; then exit 1; fi
       killall intray-server >/dev/null 2>&1 || true
       killall intray-web-server >/dev/null 2>&1 || true

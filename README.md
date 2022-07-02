@@ -1,7 +1,7 @@
 # Intray
 
 
-## Installation 
+## Installation
 
 ### Cloning
 
@@ -13,21 +13,6 @@ git clone https://github.com/NorfairKing/intray.git --recursive
 
 
 ### Building
-
-
-#### With Nix
-
-To install only the command-line application `intray`:
-
-``` shell
-nix-env --install --file nix/pkgs.nix --attr intrayPackages.intray-cli
-```
-
-To also install the other intray applications like the server and web server:
-
-``` shell
-nix-env --install --file nix/pkgs.nix --attr intrayPackages
-```
 
 
 #### With stack
@@ -58,7 +43,7 @@ To also install the other intray applications like the server and web server:
 stack install
 ```
 
-### Troubleshooting 
+### Troubleshooting
 
 #### Permission Denied (publickey)
 
@@ -143,35 +128,3 @@ If you would prefer to schedule syncing manually to decrease latency locally, yo
 sync: NeverSync
 ```
 
-
-### Setting up intray in Nix Home Manager
-
-Within your `home.nix`, add the intray module from this repository:
-
-``` nix
-{ pkgs, lib, ... }:
-with lib;
-let
-  intrayModule = (builtins.fetchGit {
-    url = "https://github.com/NorfairKing/intray";
-    ref = "master";
-    rev = "0000000000000000000000000000000000000000"; # Add a recent version here.
-  } + "/nix/home-manager-module.nix");
-in
-{
-  imports = [
-    intrayModule
-    # [...]
-  ];
-  programs.intray = {
-    enable = true;
-    sync = {
-      enable = true;
-      username = "YOUR_USERNAME_HERE";
-      password = "YOUR_PASSWORD_HERE";
-    };
-  };
-}
-```
-
-Note that we have to use `builtins.fetchGit` and cannot use `fetchFromGitHub` because this needs to be fetched at evaluation time.
