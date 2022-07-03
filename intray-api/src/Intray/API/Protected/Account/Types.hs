@@ -59,19 +59,3 @@ instance HasCodec ChangePassphrase where
       ChangePassphrase
         <$> requiredField "old-passphrase" "old passphrase" .= changePassphraseOld
         <*> requiredField "new-passphrase" "new passphrase" .= changePassphraseNew
-
-data InitiatedCheckoutSession = InitiatedCheckoutSession
-  { initiatedCheckoutSessionId :: Text,
-    initiatedCheckoutSessionCustomerId :: Text
-  }
-  deriving stock (Show, Eq, Generic)
-  deriving (FromJSON, ToJSON) via (Autodocodec InitiatedCheckoutSession)
-
-instance Validity InitiatedCheckoutSession
-
-instance HasCodec InitiatedCheckoutSession where
-  codec =
-    object "InitiatedCheckoutSession" $
-      InitiatedCheckoutSession
-        <$> requiredField "session" "session identifier" .= initiatedCheckoutSessionId
-        <*> requiredField "customer" "customer identifier" .= initiatedCheckoutSessionCustomerId

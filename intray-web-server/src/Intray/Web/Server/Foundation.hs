@@ -52,8 +52,6 @@ type IntrayAuthHandler a = AuthHandler App a
 data App = App
   { appHttpManager :: Http.Manager,
     appStatic :: EmbeddedStatic,
-    appTracking :: Maybe Text,
-    appVerification :: Maybe Text,
     appAPIBaseUrl :: BaseUrl,
     appConnectionPool :: ConnectionPool
   }

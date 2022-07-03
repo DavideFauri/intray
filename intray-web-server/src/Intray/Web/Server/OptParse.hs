@@ -37,8 +37,6 @@ combineToSettings Flags {..} Environment {..} mConf = do
     Nothing -> die "No API URL Configured. Try --help to see how to configure it."
     Just burl -> pure burl
   let setLogLevel = fromMaybe LevelInfo $ flagLogLevel <|> envLogLevel <|> mc confLogLevel
-  let setTracking = flagTracking <|> envTracking <|> mc confTracking
-  let setVerification = flagVerification <|> envVerification <|> mc confVerification
   let setLoginCacheFile = fromMaybe "intray-web-server.db" $ flagLoginCacheFile <|> envLoginCacheFile <|> mc confLoginCacheFile
   pure Settings {..}
 
@@ -63,12 +61,7 @@ environmentParser =
       <*> Env.var (fmap Just . Env.auto) "PORT" (mE "port to run the web server on")
       <*> Env.var (fmap Just . Env.auto) "LOG_LEVEL" (mE "minimal severity for log messages")
       <*> Env.var (fmap Just . left (Env.UnreadError . show) . parseBaseUrl) "API_URL" (mE "base url for the api server to call")
-      <*> Env.var (fmap Just . Env.str) "ANALYTICS_TRACKING_ID" (mE "google analytics tracking id")
-      <*> Env.var
-        (fmap Just . Env.str)
-        "SEARCH_CONSOLE_VERIFICATION"
-        (mE "google search console verification id")
-      <*> Env.var (fmap Just . Env.str) "LOGIN_CACHE_FILE" (mE "google search console verification id")
+      <*> Env.var (fmap Just . Env.str) "LOGIN_CACHE_FILE" (mE "database file where to store login cache")
   where
     mE h = Env.def Nothing <> Env.keep <> Env.help h
 
@@ -127,24 +120,6 @@ parseFlags =
                 [ long "log-level",
                   metavar "LOG_LEVEL",
                   help "the minimal severity for log messages"
-                ]
-            )
-        )
-      <*> optional
-        ( strOption
-            ( mconcat
-                [ long "analytics-tracking-id",
-                  metavar "TRACKING_ID",
-                  help "The google analytics tracking ID"
-                ]
-            )
-        )
-      <*> optional
-        ( strOption
-            ( mconcat
-                [ long "search-console-verification",
-                  metavar "VERIFICATION_TAG",
-                  help "The contents of the google search console verification tag"
                 ]
             )
         )

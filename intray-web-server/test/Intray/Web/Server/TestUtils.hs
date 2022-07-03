@@ -40,8 +40,6 @@ webServerSetupFunc man cenv = do
     App
       { appHttpManager = man,
         appStatic = myStatic,
-        appTracking = Nothing,
-        appVerification = Nothing,
         appAPIBaseUrl = baseUrl cenv,
         appConnectionPool = pool
       }

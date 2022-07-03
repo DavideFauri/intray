@@ -32,8 +32,6 @@ runIntrayWebServer Settings {..} =
                 App
                   { appHttpManager = man,
                     appStatic = myStatic,
-                    appTracking = setTracking,
-                    appVerification = setVerification,
                     appAPIBaseUrl = setAPIBaseUrl,
                     appConnectionPool = pool
                   }
